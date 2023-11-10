@@ -17,7 +17,7 @@ namespace Csharp_VotosMySQL.ModelView
         #region VARIABLES
 
         //Declaro la constante para la conexión a la BDD
-        private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=mydb";
+        private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votosddbb";
         public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<Party> _party;
         public String name { get; set; }
@@ -40,6 +40,7 @@ namespace Csharp_VotosMySQL.ModelView
             }
         }
         #endregion
+
 
         //Método que se encarga de actualizar las propiedades en cada cambio
         private void OnPropertyChange(string propertyName)

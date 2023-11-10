@@ -7,6 +7,69 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.ColumnSpan="3" 
+                Grid.Row="0" 
+                VerticalAlignment="Top"
+                HorizontalAlignment="Center">
+            <Label Content="Demo de guardado de datos en MySQL" FontSize="30"/>
+        </DockPanel>
+        <DockPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Top"
+                HorizontalAlignment="Center">
+            <Label Content="Party Name" FontSize="30" Height="48" Width="196"/>
+            <TextBox Text="{Binding name, Mode=TwoWay}" Width="100"/>
+        </DockPanel>
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top"
+        HorizontalAlignment="Center">
+            <Label Content="Votes" FontSize="30"/>
+            <TextBox Text="{Binding votesParty, Mode=TwoWay}" Width="100"/>
+        </DockPanel>
+        <DockPanel Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Top"
+        HorizontalAlignment="Center">
+            <Label Content="Seats" FontSize="30"/>
+            <TextBox Text="{Binding seat, Mode=TwoWay}" Width="100"/>
+        </DockPanel>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+        HorizontalAlignment="Center" Margin="100,0,100,10">
+            <Button Content="Guardar" 
+                 Background="LightBlue" 
+                 BorderThickness="0" 
+                 BorderBrush="Transparent" 
+                 FontSize="20" 
+                 FontWeight="Bold" 
+                 Padding="5" Click="Button_Click"
+       />
+        </StackPanel>
+        <!-- 
+     Vamos a dibujar el control que mostrará los datos en el área sobrante
+     
+     Agregaremos un scroll por si hay demasiados datos y necesitaré  desplazar 
+     verticalmente los registros 
+     -->
+        <StackPanel Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" Margin="5">
+            <ScrollViewer VerticalScrollBarVisibility="Visible" Height="360">
+                <ListView ItemsSource="{Binding parties, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <Label Content="{Binding name}" FontWeight="Bold" FontSize="10"/>
+                                <Label Content="{Binding votesParty}" FontWeight="Bold" FontSize="10"/>
+                                <Label Content="{Binding seat}" FontWeight="Bold" FontSize="10"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </Window>
