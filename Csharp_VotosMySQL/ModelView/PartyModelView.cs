@@ -19,7 +19,7 @@ namespace Csharp_VotosMySQL.ModelView
         //Declaro la constante para la conexión a la BDD
         private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votosddbb";
         public event PropertyChangedEventHandler? PropertyChanged;
-        private ObservableCollection<Party> _party;
+        private ObservableCollection<Parties> _party;
         public String name { get; set; }
         public String acronym { get; set; }
         public String presidentName { get; set; }
@@ -30,7 +30,7 @@ namespace Csharp_VotosMySQL.ModelView
         public int votesPartyAux { get; set; }
         public int seat { get; set; }
 
-        public ObservableCollection<Party> parties
+        public ObservableCollection<Parties> parties
         {
             get { return _party; }
             set
@@ -48,6 +48,7 @@ namespace Csharp_VotosMySQL.ModelView
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        
         public void newParty()
         {
             String SQL = $"INSERT INTO partido (nombre, acronimo, nombrePresidente, votos, escanios)" +
@@ -64,18 +65,26 @@ namespace Csharp_VotosMySQL.ModelView
             MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
         }
 
+        public void DeleteParty()
+        {
+            String SQL = $"DELETE FROM partido WHERE nombre = '{name}';";
+            MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
+        }
+
         public void LoadParties()
         {
             String SQL = $"SELECT nombre, votos, escanios FROM partido;";
             DataTable dt = MySQLDataComponent.LoadData(SQL, cnstr);
             if (dt.Rows.Count > 0)
             {
-                if (name == null) parties = new ObservableCollection<Party>();
+                if (name == null) parties = new ObservableCollection<Parties>();
                 foreach (DataRow i in dt.Rows)
                 {
-                    parties.Add(new Party
+                    parties.Add(new Parties
                     {
                         name = i[0].ToString(),
+                        acronym = i[0].ToString(),
+                        presidentName = i[0].ToString(),
                         votesParty = int.Parse(i[0].ToString()),
                         seat = int.Parse(i[0].ToString())
                     });

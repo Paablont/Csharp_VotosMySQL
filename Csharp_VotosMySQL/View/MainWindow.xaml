@@ -7,69 +7,64 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <DockPanel Grid.ColumnSpan="3" 
-                Grid.Row="0" 
-                VerticalAlignment="Top"
-                HorizontalAlignment="Center">
-            <Label Content="Demo de guardado de datos en MySQL" FontSize="30"/>
-        </DockPanel>
-        <DockPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Top"
-                HorizontalAlignment="Center">
-            <Label Content="Party Name" FontSize="30" Height="48" Width="196"/>
-            <TextBox Text="{Binding name, Mode=TwoWay}" Width="100"/>
-        </DockPanel>
-        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top"
-        HorizontalAlignment="Center">
-            <Label Content="Votes" FontSize="30"/>
-            <TextBox Text="{Binding votesParty, Mode=TwoWay}" Width="100"/>
-        </DockPanel>
-        <DockPanel Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Top"
-        HorizontalAlignment="Center">
-            <Label Content="Seats" FontSize="30"/>
-            <TextBox Text="{Binding seat, Mode=TwoWay}" Width="100"/>
-        </DockPanel>
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
-        HorizontalAlignment="Center" Margin="100,0,100,10">
-            <Button Content="Guardar" 
-                 Background="LightBlue" 
-                 BorderThickness="0" 
-                 BorderBrush="Transparent" 
-                 FontSize="20" 
-                 FontWeight="Bold" 
-                 Padding="5" Click="Button_Click"
-       />
-        </StackPanel>
-        <!-- 
-     Vamos a dibujar el control que mostrará los datos en el área sobrante
-     
-     Agregaremos un scroll por si hay demasiados datos y necesitaré  desplazar 
-     verticalmente los registros 
-     -->
-        <StackPanel Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" Margin="5">
-            <ScrollViewer VerticalScrollBarVisibility="Visible" Height="360">
-                <ListView ItemsSource="{Binding parties, Mode=TwoWay}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <DockPanel>
-                                <Label Content="{Binding name}" FontWeight="Bold" FontSize="10"/>
-                                <Label Content="{Binding votesParty}" FontWeight="Bold" FontSize="10"/>
-                                <Label Content="{Binding seat}" FontWeight="Bold" FontSize="10"/>
-                            </DockPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollViewer>
-        </StackPanel>
+        <TabControl Margin="125,68,80,15" TabStripPlacement="Left" x:Name="tbControlMenu" SelectionChanged="tabControl_SelectionChanged">
+            <TabItem x:Name="tabItem1" Header="Previuos Data" Height="24" Margin="-2,-2,0,0" VerticalAlignment="Top">
+                <Grid>
+                    <Label x:Name="txtPopulation" Content="Population" HorizontalAlignment="Left" Margin="80,52,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtAbsention" Content="Absention Votes" HorizontalAlignment="Left" Margin="51,90,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="txtNullVotes" Content="Null votes" HorizontalAlignment="Left" Margin="84,134,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbxPopulation" Text="{Binding TOTALPOPULATION}" IsReadOnly="True" HorizontalAlignment="Left" Height="24" Margin="187,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="127"/>
+                    <TextBox x:Name="tbxAbsent" Text="{Binding VotesAbst}" HorizontalAlignment="Left" Height="26" Margin="187,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="127"/>
+                    <TextBox x:Name="tbxNull" Text="{Binding VotesNull}" IsReadOnly="True" HorizontalAlignment="Left" Height="29" Margin="187,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="127"/>
+                    <Button x:Name="btnSaveData" Content="Save" HorizontalAlignment="Left" Height="43" Margin="116,194,0,0" VerticalAlignment="Top" Width="86" Click="btnSaveData_Click"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItem2" Header="Parties Managment" IsEnabled="False">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="dgvPeople" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,10,207,10" SelectionChanged="dgvPeople_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Acronym" Binding="{Binding name}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding age}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="President" Binding="{Binding age}" Width="*"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Background="#FFE5E5E5">
+                        <DataGrid x:Name="dvgParties" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,10,207,10" SelectionChanged="dgvPeople_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Acronym" Binding="{Binding acronym}" Width="*"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding name}" Width="*"/>
+                                <DataGridTextColumn Header="President" Binding="{Binding presidentName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button x:Name="btnSaveParty1" Content="Save" HorizontalAlignment="Left" Height="37" Margin="316,214,0,0" VerticalAlignment="Top" Width="97" Click="btnSaveParty_Click"/>
+                        <Label x:Name="txtAcronym1" Content="Acronym" HorizontalAlignment="Left" Margin="335,37,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="txtPartyName1" Content="Party name" HorizontalAlignment="Left" Margin="330,86,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="txtPresidentName" Content="President name" HorizontalAlignment="Left" Margin="319,141,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="tbxAcronym" HorizontalAlignment="Left" Margin="304,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="23"/>
+                        <TextBox x:Name="tbxPartyName" HorizontalAlignment="Left" Height="24" Margin="304,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                        <TextBox x:Name="tbxPresidentName" HorizontalAlignment="Left" Height="24" Margin="304,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                        <Button x:Name="btnDeleteParty" Content="Delete" HorizontalAlignment="Left" Height="34" Margin="317,276,0,0" VerticalAlignment="Top" Width="96" Click="btnDeleteParty_Click"/>
+                    </Grid>
+                </Grid>
+
+            </TabItem>
+            <TabItem x:Name="tabItem3" Header="Simulation" IsEnabled="False">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="dvgVotos" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,51,10,10" SelectionChanged="dgvPeople_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Party" Binding="{Binding name}" Width="*"/>
+                            <DataGridTextColumn Header="Votes" Binding="{Binding votesParty}" Width="*"/>
+                            <DataGridTextColumn Header="Seats" Binding="{Binding seat}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="btnSimulate" Content="Simulate" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Height="31" Width="131" Click="startSimulation"/>
+                    <TextBox x:Name="tbxSeats" HorizontalAlignment="Left" Margin="236,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" Height="24"/>
+                    <Label x:Name="txtSeats" Content="Seats: " HorizontalAlignment="Left" Margin="193,12,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Label Content="MADRID ELECTIONS" HorizontalAlignment="Left" Margin="328,10,0,0" VerticalAlignment="Top" FontSize="36" FontFamily="Segoe UI Semibold"/>
     </Grid>
 </Window>

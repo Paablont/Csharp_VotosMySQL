@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Csharp_VotosMySQL.Model
 {
-    class Dates
+    public class Dates
     {
         public const int TOTALPOPULATION = 6921267;
 

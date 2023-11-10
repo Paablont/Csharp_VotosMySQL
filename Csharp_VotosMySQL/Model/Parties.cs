@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Csharp_VotosMySQL.Model
 {
-    class Party : INotifyPropertyChanged
+    class Parties : INotifyPropertyChanged
     {
         #region VARIABLES
         public String name { get; set; }
