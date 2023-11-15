@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace Csharp_VotosMySQL.ModelView
 {
@@ -20,15 +21,61 @@ namespace Csharp_VotosMySQL.ModelView
         private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votosddbb";
         public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<Parties> _party;
-        public String name { get; set; }
-        public String acronym { get; set; }
-        public String presidentName { get; set; }
+        private String _name;
+        private String _acronym;
+        private String _presidentName;
 
-        public int votesParty { get; set; }
+        private int _votesParty;
 
         //I use this aux variable to calculate the seats for each party
-        public int votesPartyAux { get; set; }
-        public int seat { get; set; }
+        public int votesPartyAux;
+        private int _seat;
+
+        public String name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChange("name");
+            }
+        }
+        public String acronym
+        {
+            get { return _acronym; }
+            set
+            {
+                _acronym = value;
+                OnPropertyChange("acronym");
+            }
+        }
+        public String presidentName
+        {
+            get { return _presidentName; }
+            set
+            {
+                _presidentName = value;
+                OnPropertyChange("presidentName");
+            }
+        }
+        public int votesParty
+        {
+            get { return _votesParty; }
+            set
+            {
+                _votesParty = value;
+                OnPropertyChange("votesParty");
+            }
+        }
+        public int seat
+        {
+            get { return _seat; }
+            set
+            {
+                _seat = value;
+                OnPropertyChange("seat");
+            }
+        }
 
         public ObservableCollection<Parties> parties
         {
@@ -83,10 +130,10 @@ namespace Csharp_VotosMySQL.ModelView
                     parties.Add(new Parties
                     {
                         nameParty = i[0].ToString(),
-                        acronymParty = i[0].ToString(),
-                        presidentParty = i[0].ToString(),
-                        voteParty = int.Parse(i[0].ToString()),
-                        seatCount = int.Parse(i[0].ToString())
+                        acronymParty = i[1].ToString(),
+                        presidentParty = i[2].ToString(),
+                        voteParty = int.Parse(i[3].ToString()),
+                        seatCount = int.Parse(i[4].ToString())
                     });
                 }
             }
