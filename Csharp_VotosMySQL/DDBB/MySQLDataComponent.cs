@@ -13,7 +13,6 @@ namespace Csharp_VotosMySQL.DDBB
     {
         public static void ExecuteNonQuery(String SQL, String cnstr)
         {
-            //Hay que instalar el paquete MySqlClient
             MySqlConnection con = new MySqlConnection(cnstr);
             con.Open();
             MySqlCommand cmd = new MySqlCommand(SQL, con);
@@ -29,12 +28,12 @@ namespace Csharp_VotosMySQL.DDBB
             con.Open();
             DataTable dt = new DataTable();
             MySqlDataAdapter da = new MySqlDataAdapter(SQL, con);
-            //Vuelca datos a DTB
             da.Fill(dt);
-            
-            da.Dispose();
-            con.Close();
-                
+            if (dt.Rows.Count > 0)
+            {
+                da.Dispose();
+                con.Close();
+            }
             return dt;
         }
     }

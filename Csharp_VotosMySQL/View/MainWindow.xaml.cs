@@ -37,9 +37,9 @@ namespace Csharp_VotosMySQL
             model.LoadParties();
             
             datesPre = new Dates();
-            this.DataContext = datesPre; //binding
+           
             dvgParties.ItemsSource = model.parties;
-            model.parties = new ObservableCollection<Parties>();
+            
             Loaded += totalPopulationChange;
 
             //When the tbxAbsent  changes, tbxNull refresh with update null vote count
@@ -131,17 +131,21 @@ namespace Csharp_VotosMySQL
         //Button that add a new party to the datagrid
         private void btnSaveParty_Click(object sender, RoutedEventArgs e)
         {
+            if (model.parties.Count == 10)
+            {
+
+            }
             if (model.parties == null) model.parties = new ObservableCollection<Parties>();
             //Si el registro no existe, procedemos a crearlo
             if (model.parties.Where(x => x.nameParty == model.name).FirstOrDefault() == null)
             {
                 model.parties.Add(new Parties
                 {
-                    nameParty = model.name,
-                    acronymParty = model.acronym,
-                    presidentParty = model.presidentName,
-                    voteParty = model.votesParty,
-                    seatCount = model.seat
+                    nameParty = tbxPartyName.Text,
+                    acronymParty = tbxAcronym.Text,
+                    presidentParty = tbxPresidentName.Text,
+                    voteParty = 0,
+                    seatCount = 0
                 });
                 //una vez agregado el registro al modelo, lo agregamos a la BDD
                 model.newParty();
@@ -170,7 +174,7 @@ namespace Csharp_VotosMySQL
         //Button that delete a new party to the datagrid
         private void btnDeleteParty_Click(object sender, RoutedEventArgs e)
         {
-            //Aqui hacer llamada al DELETE
+            
 
         }
 
