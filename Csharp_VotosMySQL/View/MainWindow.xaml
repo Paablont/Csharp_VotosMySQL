@@ -20,6 +20,7 @@
 
                 </Grid>
             </TabItem>
+            <!---TwoWays es bindeado en las dos DIR. Si cambia en C# cambia en SQL y viceversa-->
             <TabItem x:Name="tabItem2" Header="Parties Managment" IsEnabled="False">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="dgvPeople" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,10,207,10" SelectionChanged="dgvPeople_SelectionChanged">
@@ -59,7 +60,7 @@
                             <DataGridTextColumn Header="Seats" Binding="{Binding seat}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button x:Name="btnSimulate" Content="Simulate" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Height="31" Width="131" Click="startSimulation"/>
+                    <Button x:Name="btnSimulate" Content="Simulate" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Height="31" Width="131" />
                     <TextBox x:Name="tbxSeats" HorizontalAlignment="Left" Margin="236,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" Height="24"/>
                     <Label x:Name="txtSeats" Content="Seats: " HorizontalAlignment="Left" Margin="193,12,0,0" VerticalAlignment="Top"/>
                 </Grid>

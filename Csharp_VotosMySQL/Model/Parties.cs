@@ -10,15 +10,60 @@ namespace Csharp_VotosMySQL.Model
     class Parties : INotifyPropertyChanged
     {
         #region VARIABLES
-        public String name { get; set; }
-        public String acronym { get; set; }
-        public String presidentName { get; set; }
+        private String name;
+        private String acronym;
+        private String presidentName;
 
-        public int votesParty { get; set; }
+        private int votesParty;
 
         //I use this aux variable to calculate the seats for each party
-        public int votesPartyAux { get; set; }
-        public int seat { get; set; }
+        public int votesPartyAux;
+        private int seat;
+
+        public String nameParty
+        {
+            get { return name; }
+            set { name = value; 
+                OnPropertyChange("nameParty");
+            }
+        }
+        public String acronymParty
+        {
+            get { return acronym; }
+            set
+            {
+                acronym = value;
+                OnPropertyChange("acronymParty");
+            }
+        }
+        public String presidentParty
+        {
+            get { return presidentName; }
+            set
+            {
+                presidentName = value;
+                OnPropertyChange("presidentParty");
+            }
+        }
+        public int voteParty
+        {
+            get { return votesParty; }
+            set
+            {
+                votesParty = value;
+                OnPropertyChange("voteParty");
+            }
+        }
+        public int seatCount
+        {
+            get { return seat; }
+            set
+            {
+                seat = value;
+                OnPropertyChange("seatCount");
+            }
+        }
+        
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

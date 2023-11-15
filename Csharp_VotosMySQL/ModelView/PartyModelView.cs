@@ -82,11 +82,11 @@ namespace Csharp_VotosMySQL.ModelView
                 {
                     parties.Add(new Parties
                     {
-                        name = i[0].ToString(),
-                        acronym = i[0].ToString(),
-                        presidentName = i[0].ToString(),
-                        votesParty = int.Parse(i[0].ToString()),
-                        seat = int.Parse(i[0].ToString())
+                        nameParty = i[0].ToString(),
+                        acronymParty = i[0].ToString(),
+                        presidentParty = i[0].ToString(),
+                        voteParty = int.Parse(i[0].ToString()),
+                        seatCount = int.Parse(i[0].ToString())
                     });
                 }
             }

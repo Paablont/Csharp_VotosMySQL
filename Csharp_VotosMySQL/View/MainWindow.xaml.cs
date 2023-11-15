@@ -25,10 +25,8 @@ namespace Csharp_VotosMySQL
     {
         //Invocamos el modelo y lo asignamos a DataContext
         private PartyModelView model = new PartyModelView();
-        Dates datesPre { get; set; }
+        Dates datesPre { get; set;  }
         Parties party;
-        List<Parties> partyList;
-        
         int peopleThatVote, votesAbst, votesNull, seatsNumber, votesValid;
         string absentString, nullString, seatString;
         public MainWindow()
@@ -41,7 +39,7 @@ namespace Csharp_VotosMySQL
             datesPre = new Dates();
             this.DataContext = datesPre; //binding
             dvgParties.ItemsSource = model.parties;
-            partyList = model.parties.ToList<Parties>();
+            model.parties = new ObservableCollection<Parties>();
             Loaded += totalPopulationChange;
 
             //When the tbxAbsent  changes, tbxNull refresh with update null vote count
@@ -61,11 +59,11 @@ namespace Csharp_VotosMySQL
                 dvgVotos.ItemsSource = null;
                 dvgVotos.Items.Refresh();
                 tabItem3.IsEnabled = false;
-                foreach (Parties p in partyList)
+                foreach (Parties p in model.parties)
                 {
-                    p.seat = 0;
+                    p.seatCount = 0;
                     p.votesPartyAux = 0;
-                    p.votesParty = 0;
+                    p.voteParty = 0;
                 }
             }
         }
@@ -75,7 +73,6 @@ namespace Csharp_VotosMySQL
         //When click on Button saves data
         private void btnSaveData_Click(object sender, RoutedEventArgs e)
         {
-
             absentString = tbxAbsent.Text;
             nullString = tbxNull.Text;
             peopleThatVote = datesPre.calculatePeopleThatVote(absentString);
@@ -136,15 +133,15 @@ namespace Csharp_VotosMySQL
         {
             if (model.parties == null) model.parties = new ObservableCollection<Parties>();
             //Si el registro no existe, procedemos a crearlo
-            if (model.parties.Where(x => x.name == model.name).FirstOrDefault() == null)
+            if (model.parties.Where(x => x.nameParty == model.name).FirstOrDefault() == null)
             {
                 model.parties.Add(new Parties
                 {
-                    name = model.name,
-                    acronym = model.acronym,
-                    presidentName = model.presidentName,
-                    votesParty = model.votesParty,
-                    seat = model.seat
+                    nameParty = model.name,
+                    acronymParty = model.acronym,
+                    presidentParty = model.presidentName,
+                    voteParty = model.votesParty,
+                    seatCount = model.seat
                 });
                 //una vez agregado el registro al modelo, lo agregamos a la BDD
                 model.newParty();
@@ -154,12 +151,12 @@ namespace Csharp_VotosMySQL
             {
                 foreach (Parties r in model.parties)
                 {
-                    if (r.name.Equals(model.name))
+                    if (r.nameParty.Equals(model.name))
                     {
-                        r.acronym = model.acronym;
-                        r.presidentName = model.presidentName;
-                        r.votesParty = model.votesParty;
-                        r.seat = model.seat;
+                        r.acronymParty = model.acronym;
+                        r.presidentParty = model.presidentName;
+                        r.voteParty = model.votesParty;
+                        r.seatCount = model.seat;
                         break;
                     }
                 }
