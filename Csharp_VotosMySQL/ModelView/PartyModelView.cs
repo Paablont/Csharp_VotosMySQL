@@ -88,6 +88,10 @@ namespace Csharp_VotosMySQL.ModelView
         }
         #endregion
 
+        public PartyModelView()
+        {
+            _party = new ObservableCollection<Parties>();
+        }
 
         //Método que se encarga de actualizar las propiedades en cada cambio
         private void OnPropertyChange(string propertyName)
