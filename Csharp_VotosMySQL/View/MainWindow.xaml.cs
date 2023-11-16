@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Google.Protobuf.Reflection.UninterpretedOption.Types;
 
 namespace Csharp_VotosMySQL
 {
@@ -53,7 +54,7 @@ namespace Csharp_VotosMySQL
         //When press tab 1 or tab 2, clear the data from the datagrid on tab 3
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
             if (tbControlMenu.SelectedIndex == 0 || tbControlMenu.SelectedIndex == 1)
             {
                 dvgVotos.ItemsSource = null;
@@ -61,9 +62,9 @@ namespace Csharp_VotosMySQL
                 tabItem3.IsEnabled = false;
                 foreach (Parties p in model.parties)
                 {
-                    p.seatCount = 0;
-                    p.votesPartyAux = 0;
-                    p.voteParty = 0;
+                    p.SeatCount = 0;
+                    p.VotePartyAux = 0;
+                    p.VoteParty = 0;
                 }
             }
         }
@@ -73,6 +74,7 @@ namespace Csharp_VotosMySQL
         //When click on Button saves data
         private void btnSaveData_Click(object sender, RoutedEventArgs e)
         {
+            
             absentString = tbxAbsent.Text;
             nullString = tbxNull.Text;
             peopleThatVote = datesPre.calculatePeopleThatVote(absentString);
@@ -133,20 +135,24 @@ namespace Csharp_VotosMySQL
         {
             if (model.parties.Count == 10)
             {
+                MessageBox.Show("10 parties have been added to the database. The simulation will begin now: ");
+                tbControlMenu.SelectedIndex = 2;                
 
+                tabItem3.IsEnabled = true;
             }
             if (model.parties == null) model.parties = new ObservableCollection<Parties>();
             //Si el registro no existe, procedemos a crearlo
-            if (model.parties.Where(x => x.nameParty == model.name).FirstOrDefault() == null)
+            if (model.parties.Where(x => x.NameParty == model.name).FirstOrDefault() == null)
             {
                 model.parties.Add(new Parties
                 {
-                    nameParty = tbxPartyName.Text,
-                    acronymParty = tbxAcronym.Text,
-                    presidentParty = tbxPresidentName.Text,
-                    voteParty = 0,
-                    seatCount = 0
+                    NameParty = tbxPartyName.Text,
+                    AcronymParty = tbxAcronym.Text,
+                    PresidentParty = tbxPresidentName.Text,
+                    VoteParty = 0,
+                    SeatCount = 0
                 });
+                Console.WriteLine(tbxPartyName.Text);
                 //una vez agregado el registro al modelo, lo agregamos a la BDD
                 model.newParty();
             }
@@ -155,13 +161,13 @@ namespace Csharp_VotosMySQL
             {
                 foreach (Parties r in model.parties)
                 {
-                    if (r.nameParty.Equals(model.name))
+                    if (r.NameParty.Equals(model.name))
                     {
-                        r.acronymParty = model.acronym;
-                        r.presidentParty = model.presidentName;
-                        r.voteParty = model.votesParty;
-                        r.seatCount = model.seat;
-                        break;
+                        r.NameParty = tbxPartyName.Text;
+                        r.AcronymParty = tbxAcronym.Text;
+                        r.PresidentParty = tbxPresidentName.Text;
+                        r.VoteParty = 0;
+                        r.SeatCount = 0;
                     }
                 }
 
@@ -178,7 +184,44 @@ namespace Csharp_VotosMySQL
 
         }
 
+        //*************** THIRD TAB FUNCTIONS *****************
 
-       
+        //Start simulation button
+        //*************** THIRD TAB FUNCTIONS *****************
+
+        //Start simulation button
+        private void startSimulation(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                seatString = tbxSeats.Text;
+                seatsNumber = int.Parse(seatString);
+                
+
+                if (seatsNumber <= 0)
+                {
+                    MessageBox.Show("The value of seats can not be less or equals to 0");
+
+
+                }
+                else
+                {
+                    dvgVotos.ItemsSource = model.parties;
+                    dvgVotos.Items.Refresh();
+                    model.calculateVotesParty(votesValid, model.parties);
+                    //model.calculateStands(model.parties, seatsNumber);
+
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("The value of seats can not be alphabetic character or 0");
+            }
+        }
+
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Csharp_VotosMySQL.DDBB;
 using Csharp_VotosMySQL.Model;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 
@@ -116,12 +118,6 @@ namespace Csharp_VotosMySQL.ModelView
             MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
         }
 
-        public void DeleteParty()
-        {
-            String SQL = $"DELETE FROM partido WHERE nombre = '{name}';";
-            MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
-        }
-
         public void LoadParties()
         {
             String SQL = $"SELECT nombre, acronimo,nombrePresidente,votos,escanios FROM partido;";
@@ -133,15 +129,51 @@ namespace Csharp_VotosMySQL.ModelView
                 {
                     parties.Add(new Parties
                     {
-                        nameParty = i[0].ToString(),
-                        acronymParty = i[1].ToString(),
-                        presidentParty = i[2].ToString(),
-                        voteParty = int.Parse(i[3].ToString()),
-                        seatCount = int.Parse(i[4].ToString())
+                        NameParty = i[0].ToString(),
+                        AcronymParty = i[1].ToString(),
+                        PresidentParty = i[2].ToString(),
+                        VoteParty = int.Parse(i[3].ToString()),
+                        SeatCount = int.Parse(i[4].ToString())
                     });
                 }
             }
             dt.Dispose();
         }
+
+        public void deleteParties(Parties p)
+        {
+            parties.Remove(p);
+        }
+
+
+        //Calculate the votes to each party
+        public void calculateVotesParty(int votesValid, ObservableCollection<Parties> partyList)
+        {
+            double[] percentages = { 35.25, 24.75, 15.75, 14.25, 3.75, 3.25, 1.5, 0.5, 0.25, 0.25 };
+
+            for (int i = 0; i < partyList.Count; i++)
+            {
+                partyList[i].VoteParty = (int)Math.Round(votesValid * (percentages[i] / 100));
+                partyList[i].VotePartyAux = (int)Math.Round(votesValid * (percentages[i] / 100));
+
+            }
+
+
+        }
+
+        public void calculateStands(ObservableCollection<Parties> partyList, int seatsNumber)
+        {
+            int posMaxValue, maxVotes;
+
+            for (int i = 0; i < seatsNumber; i++)
+            {
+                maxVotes = partyList.Max(x => x.VotePartyAux);
+                posMaxValue = partyList.IndexOf(partyList.FirstOrDefault(x => x.VotePartyAux == maxVotes));
+                partyList[posMaxValue].SeatCount += 1;
+                partyList[posMaxValue].VotePartyAux = partyList[posMaxValue].VoteParty / (partyList[posMaxValue].SeatCount + 1);
+            }
+        }
+
+
     }
 }
