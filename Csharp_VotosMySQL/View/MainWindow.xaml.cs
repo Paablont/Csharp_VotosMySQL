@@ -62,9 +62,9 @@ namespace Csharp_VotosMySQL
                 tabItem3.IsEnabled = false;
                 foreach (Parties p in model.parties)
                 {
-                    p.SeatCount = 0;
-                    p.VotePartyAux = 0;
-                    p.VoteParty = 0;
+                    p.seatCount = 0;
+                    p.votePartyAux = 0;
+                    p.voteParty = 0;
                 }
             }
         }
@@ -136,51 +136,63 @@ namespace Csharp_VotosMySQL
             if (model.parties.Count == 10)
             {
                 MessageBox.Show("10 parties have been added to the database. The simulation will begin now: ");
-                tbControlMenu.SelectedIndex = 2;                
-
+                tbControlMenu.SelectedIndex = 2;
                 tabItem3.IsEnabled = true;
             }
+
             if (model.parties == null) model.parties = new ObservableCollection<Parties>();
-            //Si el registro no existe, procedemos a crearlo
-            if (model.parties.Where(x => x.NameParty == model.name).FirstOrDefault() == null)
+
+            // Si el registro no existe, procedemos a crearlo
+            if (model.parties.Where(x => x.nameParty == model.name).FirstOrDefault() == null)
             {
+                // Crear un nuevo objeto Parties utilizando el constructor
                 model.parties.Add(new Parties
                 {
-                    NameParty = tbxPartyName.Text,
-                    AcronymParty = tbxAcronym.Text,
-                    PresidentParty = tbxPresidentName.Text,
-                    VoteParty = 0,
-                    SeatCount = 0
+                    nameParty = model.name,
+                    acronymParty = model.acronym,
+                    presidentParty = model.presidentName,
+                    voteParty = model.votesParty,
+                    votePartyAux = model.votesPartyAux,
+                    seatCount = model.seatCount
                 });
-                Console.WriteLine(tbxPartyName.Text);
-                //una vez agregado el registro al modelo, lo agregamos a la BDD
+
+                // Agregar el nuevo partido a la colección y a la base de datos
+                
                 model.newParty();
             }
-            //Si el registro ya existe, debemos actualizarlo
+            // Si el registro ya existe, debemos actualizarlo
             else
             {
                 foreach (Parties r in model.parties)
                 {
-                    if (r.NameParty.Equals(model.name))
+                    if (r.nameParty.Equals(model.name))
                     {
-                        r.NameParty = tbxPartyName.Text;
-                        r.AcronymParty = tbxAcronym.Text;
-                        r.PresidentParty = tbxPresidentName.Text;
-                        r.VoteParty = 0;
-                        r.SeatCount = 0;
+                        r.nameParty = tbxPartyName.Text;
+                        r.acronymParty = tbxAcronym.Text;
+                        r.presidentParty = tbxPresidentName.Text;
+                        r.voteParty = 0;
+                        r.seatCount = 0;
                     }
                 }
 
-                //Actualizamos
+                // Actualizamos
                 model.UpdateParty();
             }
-
         }
+
+
 
         //Button that delete a new party to the datagrid
         private void btnDeleteParty_Click(object sender, RoutedEventArgs e)
         {
-            
+            // Obtén el elemento seleccionado en el DataGrid
+            var selectedParty = dvgParties.SelectedItem as Parties;
+
+            if (selectedParty != null)
+            {
+                // Elimina el elemento seleccionado del modelo y de la base de datos
+                model.DeleteParty(selectedParty.nameParty);
+            }
 
         }
 

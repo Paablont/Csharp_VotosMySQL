@@ -20,7 +20,7 @@ namespace Csharp_VotosMySQL.ModelView
         #region VARIABLES
 
         //Declaro la constante para la conexión a la BDD
-        private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votosddbb";
+        private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votossql";
         public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<Parties> _party;
         private String _name;
@@ -69,7 +69,7 @@ namespace Csharp_VotosMySQL.ModelView
                 OnPropertyChange("votesParty");
             }
         }
-        public int seat
+        public int seatCount
         {
             get { return _seat; }
             set
@@ -105,7 +105,7 @@ namespace Csharp_VotosMySQL.ModelView
         public void newParty()
         {
             String SQL = $"INSERT INTO partido (nombre, acronimo, nombrePresidente, votos, escanios)" +
-                $" VALUES ('{name}','{acronym}', '{presidentName}', '{votesParty}', '{seat}');";
+                $" VALUES ('{name}','{acronym}', '{presidentName}', '{votesParty}', '{seatCount}');";
             //usaremos las clases de la librería de MySQL para ejecutar queries
             //Instalar el paquete MySQL.Data
             MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
@@ -114,35 +114,51 @@ namespace Csharp_VotosMySQL.ModelView
         public void UpdateParty()
         {
             String SQL = $"UPDATE partido SET nombre = '{name}', acronimo = '{acronym}',nombreRepresentante = '{presidentName}'" +
-                $",votos = '{votesParty}',escanios = '{seat}' WHERE nombre = '{name}';";
+                $",votos = '{votesParty}',escanios = '{seatCount}' WHERE nombre = '{name}';";
             MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
         }
 
         public void LoadParties()
         {
-            String SQL = $"SELECT nombre, acronimo,nombrePresidente,votos,escanios FROM partido;";
+            String SQL = $"SELECT id,nombre, acronimo, nombrePresidente, votos, escanios FROM partido;";
             DataTable dt = MySQLDataComponent.LoadData(SQL, cnstr);
-            if (dt.Rows.Count > 0)
+
+            // Limpia la colección actual
+            parties.Clear();
+
+            foreach (DataRow i in dt.Rows)
             {
-                if (name == null) parties = new ObservableCollection<Parties>();
-                foreach (DataRow i in dt.Rows)
+                parties.Add(new Parties
                 {
-                    parties.Add(new Parties
-                    {
-                        NameParty = i[0].ToString(),
-                        AcronymParty = i[1].ToString(),
-                        PresidentParty = i[2].ToString(),
-                        VoteParty = int.Parse(i[3].ToString()),
-                        SeatCount = int.Parse(i[4].ToString())
-                    });
-                }
+                    nameParty = i[1].ToString(),  // id está en la posición 0, así que empezamos desde la posición 1
+                    acronymParty = i[2].ToString(),
+                    presidentParty = i[3].ToString(),
+                    voteParty = int.Parse(i[4].ToString()),
+                    votePartyAux = 0, // Puedes inicializarlo con algún valor si es necesario
+                    seatCount = int.Parse(i[5].ToString())
+                });
+
+
+
+
             }
+
             dt.Dispose();
         }
 
-        public void deleteParties(Parties p)
+
+        public void DeleteParty(string partyName)
         {
-            parties.Remove(p);
+            // Realiza la eliminación del partido en la base de datos
+            String SQL = $"DELETE FROM partido WHERE nombre = '{partyName}';";
+            MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
+
+            // Elimina el partido de la colección local
+            var partyToDelete = parties.FirstOrDefault(p => p.nameParty == partyName);
+            if (partyToDelete != null)
+            {
+                parties.Remove(partyToDelete);
+            }
         }
 
 
@@ -153,8 +169,8 @@ namespace Csharp_VotosMySQL.ModelView
 
             for (int i = 0; i < partyList.Count; i++)
             {
-                partyList[i].VoteParty = (int)Math.Round(votesValid * (percentages[i] / 100));
-                partyList[i].VotePartyAux = (int)Math.Round(votesValid * (percentages[i] / 100));
+                partyList[i].voteParty = (int)Math.Round(votesValid * (percentages[i] / 100));
+                partyList[i].votePartyAux = (int)Math.Round(votesValid * (percentages[i] / 100));
 
             }
 
@@ -167,10 +183,10 @@ namespace Csharp_VotosMySQL.ModelView
 
             for (int i = 0; i < seatsNumber; i++)
             {
-                maxVotes = partyList.Max(x => x.VotePartyAux);
-                posMaxValue = partyList.IndexOf(partyList.FirstOrDefault(x => x.VotePartyAux == maxVotes));
-                partyList[posMaxValue].SeatCount += 1;
-                partyList[posMaxValue].VotePartyAux = partyList[posMaxValue].VoteParty / (partyList[posMaxValue].SeatCount + 1);
+                maxVotes = partyList.Max(x => x.votePartyAux);
+                posMaxValue = partyList.IndexOf(partyList.FirstOrDefault(x => x.votePartyAux == maxVotes));
+                partyList[posMaxValue].seatCount += 1;
+                partyList[posMaxValue].votePartyAux = partyList[posMaxValue].voteParty / (partyList[posMaxValue].seatCount + 1);
             }
         }
 

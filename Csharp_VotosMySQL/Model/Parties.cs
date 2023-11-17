@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Google.Protobuf.Reflection.UninterpretedOption.Types;
 
 namespace Csharp_VotosMySQL.Model
 {
     class Parties : INotifyPropertyChanged
     {
         #region VARIABLES
+        public event PropertyChangedEventHandler? PropertyChanged;
         private string _name;
         private string _acronym;
         private string _presidentName;
@@ -21,63 +23,69 @@ namespace Csharp_VotosMySQL.Model
         private int _votesPartyAux;
         private int _seat;
 
-        public string NameParty
+        
+
+        public string nameParty
         {
             get { return _name; }
             set
             {
                 _name = value;
-                OnPropertyChange(nameof(NameParty));
+                OnPropertyChange(nameof(nameParty));
             }
         }
-        public string AcronymParty
+        public string acronymParty
         {
             get { return _acronym; }
             set
             {
                 _acronym = value;
-                OnPropertyChange(nameof(AcronymParty));
+                OnPropertyChange(nameof(acronymParty));
             }
         }
-        public string PresidentParty
+        public string presidentParty
         {
             get { return _presidentName; }
             set
             {
                 _presidentName = value;
-                OnPropertyChange(nameof(PresidentParty));
+                OnPropertyChange(nameof(presidentParty));
             }
         }
-        public int VoteParty
+        public int voteParty
         {
             get { return _votesParty; }
             set
             {
                 _votesParty = value;
-                OnPropertyChange(nameof(VoteParty));
+                OnPropertyChange(nameof(voteParty));
             }
         }
 
-        public int VotePartyAux
+        public int votePartyAux
         {
             get { return _votesPartyAux; }
             set
             {
                 _votesPartyAux = value;
-                OnPropertyChange(nameof(VotePartyAux));
+                OnPropertyChange(nameof(votePartyAux));
             }
         }
-        public int SeatCount
+        public int seatCount
         {
             get { return _seat; }
             set
             {
                 _seat = value;
-                OnPropertyChange(nameof(SeatCount));
+                OnPropertyChange(nameof(seatCount));
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        // En la clase Parties
+        
+
+
+
 
         #endregion
 
