@@ -22,16 +22,7 @@
             </TabItem>
             <!---TwoWays es bindeado en las dos DIR. Si cambia en C# cambia en SQL y viceversa-->
             <TabItem x:Name="tabItem2" Header="Parties Managment" IsEnabled="False">
-                <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="dgvPeople" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,10,207,10" SelectionChanged="dgvPeople_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Acronym" Binding="{Binding name}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding age}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="President" Binding="{Binding age}" Width="*"></DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <Grid Background="#FFE5E5E5">
+                  <Grid Background="#FFE5E5E5">
                         <DataGrid x:Name="dvgParties" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,10,207,10" SelectionChanged="dgvPeople_SelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Acronym" Binding="{Binding acronymParty,Mode=TwoWay}" Width="*"/>
@@ -48,7 +39,7 @@
                         <TextBox x:Name="tbxPresidentName" Text="{Binding presidentName, Mode=TwoWay}" HorizontalAlignment="Left" Height="24" Margin="304,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
                         <Button x:Name="btnDeleteParty" Content="Delete" HorizontalAlignment="Left" Height="34" Margin="317,276,0,0" VerticalAlignment="Top" Width="96" Click="btnDeleteParty_Click"/>
                     </Grid>
-                </Grid>
+                
 
             </TabItem>
             <TabItem x:Name="tabItem3" Header="Simulation" IsEnabled="False">
