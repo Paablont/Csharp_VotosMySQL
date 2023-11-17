@@ -113,7 +113,7 @@ namespace Csharp_VotosMySQL.ModelView
 
         public void UpdateParty()
         {
-            String SQL = $"UPDATE partido SET nombre = '{name}', acronimo = '{acronym}',nombreRepresentante = '{presidentName}'" +
+            String SQL = $"UPDATE partido SET nombre = '{name}', acronimo = '{acronym}',nombrePresidente = '{presidentName}'" +
                 $",votos = '{votesParty}',escanios = '{seatCount}' WHERE nombre = '{name}';";
             MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
         }
