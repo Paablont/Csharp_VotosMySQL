@@ -11,6 +11,7 @@ namespace Csharp_VotosMySQL.Model
     class Parties : INotifyPropertyChanged
     {
         #region VARIABLES
+        
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _name;
         private string _acronym;
@@ -23,8 +24,8 @@ namespace Csharp_VotosMySQL.Model
         private int _votesPartyAux;
         private int _seat;
 
-        
 
+        //ESTAS AL BINDING
         public string nameParty
         {
             get { return _name; }

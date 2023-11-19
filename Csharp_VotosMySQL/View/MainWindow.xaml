@@ -25,6 +25,7 @@
                   <Grid Background="#FFE5E5E5">
                         <DataGrid x:Name="dvgParties" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,10,207,10" SelectionChanged="dgvPeople_SelectionChanged">
                             <DataGrid.Columns>
+                                <!---Para mostrarlo en el Datagrid se bindea con la clase objeto Parties-->
                                 <DataGridTextColumn Header="Acronym" Binding="{Binding acronymParty,Mode=TwoWay}" Width="*"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding nameParty,Mode=TwoWay}" Width="*"/>
                                 <DataGridTextColumn Header="President" Binding="{Binding presidentParty,Mode=TwoWay}" Width="*"/>
@@ -34,7 +35,8 @@
                         <Label x:Name="txtAcronym1" Content="Acronym" HorizontalAlignment="Left" Margin="335,37,0,0" VerticalAlignment="Top"/>
                         <Label x:Name="txtPartyName1" Content="Party name" HorizontalAlignment="Left" Margin="330,86,0,0" VerticalAlignment="Top"/>
                         <Label x:Name="txtPresidentName" Content="President name" HorizontalAlignment="Left" Margin="319,141,0,0" VerticalAlignment="Top"/>
-                        <TextBox x:Name="tbxAcronym" Text="{Binding acronym, Mode=TwoWay}" HorizontalAlignment="Left" Margin="304,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="23" />
+                    <!---Para guardarlo en el MYSQL se bindea con la clase PartyModel-->
+                    <TextBox x:Name="tbxAcronym" Text="{Binding acronym, Mode=TwoWay}" HorizontalAlignment="Left" Margin="304,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="23" />
                         <TextBox x:Name="tbxPartyName" Text="{Binding name, Mode=TwoWay}" HorizontalAlignment="Left" Height="24" Margin="304,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
                         <TextBox x:Name="tbxPresidentName" Text="{Binding presidentName, Mode=TwoWay}" HorizontalAlignment="Left" Height="24" Margin="304,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
                         <Button x:Name="btnDeleteParty" Content="Delete" HorizontalAlignment="Left" Height="34" Margin="317,276,0,0" VerticalAlignment="Top" Width="96" Click="btnDeleteParty_Click"/>
@@ -46,12 +48,12 @@
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="dvgVotos" AutoGenerateColumns="False" IsReadOnly="True" Margin="10,51,10,10" SelectionChanged="dgvPeople_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Party" Binding="{Binding name,Mode=TwoWay}" Width="*"/>
-                            <DataGridTextColumn Header="Votes" Binding="{Binding votesParty,Mode=TwoWay}" Width="*"/>
+                            <DataGridTextColumn Header="Party" Binding="{Binding nameParty,Mode=TwoWay}" Width="*"/>
+                            <DataGridTextColumn Header="Votes" Binding="{Binding voteParty,Mode=TwoWay}" Width="*"/>
                             <DataGridTextColumn Header="Seats" Binding="{Binding seatCount,Mode=TwoWay}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button x:Name="btnSimulate" Content="Simulate" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Height="31" Width="131" />
+                    <Button x:Name="btnSimulate" Content="Simulate" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Height="31" Width="131" Click="startSimulation" />
                     <TextBox x:Name="tbxSeats" HorizontalAlignment="Left" Margin="236,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" Height="24"/>
                     <Label x:Name="txtSeats" Content="Seats: " HorizontalAlignment="Left" Margin="193,12,0,0" VerticalAlignment="Top"/>
                 </Grid>

@@ -139,46 +139,54 @@ namespace Csharp_VotosMySQL
                 tbControlMenu.SelectedIndex = 2;
                 tabItem3.IsEnabled = true;
             }
-
-            if (model.parties == null) model.parties = new ObservableCollection<Parties>();
-
-            // Si el registro no existe, procedemos a crearlo
-            if (model.parties.Where(x => x.nameParty == model.name).FirstOrDefault() == null)
+            else if (string.IsNullOrWhiteSpace(tbxAbsent.Text) || string.IsNullOrWhiteSpace(tbxAcronym.Text) || string.IsNullOrWhiteSpace(tbxPartyName.Text))
             {
-                // Crear un nuevo objeto Parties utilizando el constructor
-                model.parties.Add(new Parties
-                {
-                    nameParty = model.name,
-                    acronymParty = model.acronym,
-                    presidentParty = model.presidentName,
-                    voteParty = model.votesParty,
-                    votePartyAux = model.votesPartyAux,
-                    seatCount = model.seatCount
-                });
-
-                // Agregar el nuevo partido a la colección y a la base de datos
-                
-                model.newParty();
+                MessageBox.Show("Please fill in all required fields (Absent, Acronym, Party Name).");
             }
-            // Si el registro ya existe, debemos actualizarlo
             else
             {
-                foreach (Parties r in model.parties)
-                {
-                    if (r.nameParty.Equals(model.name))
-                    {
-                        r.nameParty = tbxPartyName.Text;
-                        r.acronymParty = tbxAcronym.Text;
-                        r.presidentParty = tbxPresidentName.Text;
-                        r.voteParty = 0;
-                        r.seatCount = 0;
-                    }
-                }
+                //Si es nulo se crea una nueva ObservableCollection (lista)
+                if (model.parties == null) model.parties = new ObservableCollection<Parties>();
 
-                // Actualizamos
-                model.UpdateParty();
+                // Si el registro no existe, procedemos a crearlo
+                //La x es del objeto en si (Parties) y el model es de el que conecta con SQL
+                if (model.parties.Where(x => x.nameParty == model.name).FirstOrDefault() == null)
+                {
+                    // Crear un nuevo objeto Parties utilizando el constructor
+                    model.parties.Add(new Parties
+                    {
+                        nameParty = model.name,
+                        acronymParty = model.acronym,
+                        presidentParty = model.presidentName,
+                        voteParty = model.votesParty,
+                        votePartyAux = model.votesPartyAux,
+                        seatCount = model.seatCount
+                    });
+
+                    // Agregar el nuevo partido a la colección y a la base de datos
+                    model.newParty();
+                }
+                // Si el registro ya existe, debemos actualizarlo
+                else
+                {
+                    foreach (Parties r in model.parties)
+                    {
+                        if (r.nameParty.Equals(model.name))
+                        {
+                            r.nameParty = tbxPartyName.Text;
+                            r.acronymParty = tbxAcronym.Text;
+                            r.presidentParty = tbxPresidentName.Text;
+                            r.voteParty = 0;
+                            r.seatCount = 0;
+                        }
+                    }
+
+                    // Actualizamos
+                    model.UpdateParty();
+                }
             }
         }
+
 
 
 
@@ -196,41 +204,45 @@ namespace Csharp_VotosMySQL
 
         }
 
-        //*************** THIRD TAB FUNCTIONS *****************
 
-        //Start simulation button
         //*************** THIRD TAB FUNCTIONS *****************
 
         //Start simulation button
         private void startSimulation(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 seatString = tbxSeats.Text;
                 seatsNumber = int.Parse(seatString);
-                
 
                 if (seatsNumber <= 0)
                 {
-                    MessageBox.Show("The value of seats can not be less or equals to 0");
-
-
+                    MessageBox.Show("The value of seats cannot be less than or equal to 0");
                 }
                 else
                 {
+                    //Esto lo actualiza en el Datagrid
                     dvgVotos.ItemsSource = model.parties;
-                    dvgVotos.Items.Refresh();
+                    
                     model.calculateVotesParty(votesValid, model.parties);
-                    //model.calculateStands(model.parties, seatsNumber);
+                    model.calculateStands(model.parties, seatsNumber);
 
+                    //y esto en el SQL
+                    foreach (var party in model.parties)
+                    {                       
+                        model.votesParty = party.voteParty;
+                        model.seatCount = party.seatCount;
+                        model.name = party.nameParty;
+                        model.UpdateParty();
+                    }
                 }
             }
             catch (FormatException)
             {
-                MessageBox.Show("The value of seats can not be alphabetic character or 0");
+                MessageBox.Show("The value of seats cannot be an alphabetic character or 0");
             }
         }
+
 
 
 
