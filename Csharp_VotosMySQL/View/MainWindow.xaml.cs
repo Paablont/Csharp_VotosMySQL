@@ -26,18 +26,21 @@ namespace Csharp_VotosMySQL
     {
         //Invocamos el modelo y lo asignamos a DataContext
         private PartyModelView model = new PartyModelView();
-        Dates datesPre { get; set;  }
+        DataModelView datesPre;
         Parties party;
         int peopleThatVote, votesAbst, votesNull, seatsNumber, votesValid;
         string absentString, nullString, seatString;
+
         public MainWindow()
         {
             InitializeComponent();
             DataContext = model;
+            DataContext = datesPre;
             //Cargamos los datos existentes en la BDD
             model.LoadParties();
+            datesPre.LoadDates();
             
-            datesPre = new Dates();
+            datesPre = new DataModelView();
            
             dvgParties.ItemsSource = model.parties;
             
@@ -81,11 +84,11 @@ namespace Csharp_VotosMySQL
             votesAbst = int.Parse(tbxAbsent.Text);
             votesNull = datesPre.votesNullCalculate(absentString);
             votesValid = datesPre.votesValidCalculate(peopleThatVote, votesNull);
-            datesPre.PeopleThatVote = peopleThatVote;
-            datesPre.VotesAbst = votesAbst;
-            datesPre.VotesNull = votesNull;
+            datesPre.peopleThatVote = peopleThatVote;
+            datesPre.votesAbst = votesAbst;
+            datesPre.votesNull = votesNull;
 
-            if (datesPre.VotesAbst == 0)
+            if (datesPre.votesAbst == 0)
             {
                 MessageBox.Show("The absent votes can not be 0");
             }
@@ -98,6 +101,11 @@ namespace Csharp_VotosMySQL
                 tabItem2.IsEnabled = true;
             }
 
+
+        }
+
+        private void tbxPopulation_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
 

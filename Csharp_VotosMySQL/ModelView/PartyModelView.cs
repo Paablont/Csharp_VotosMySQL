@@ -20,7 +20,7 @@ namespace Csharp_VotosMySQL.ModelView
         #region VARIABLES
 
         //Declaro la constante para la conexión a la BDD
-        private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votossql";
+        private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votosddbb";
         public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<Parties> _party;
         private String _name;

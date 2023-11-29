@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,72 +12,63 @@ namespace Csharp_VotosMySQL.Model
     {
         public const int TOTALPOPULATION = 6921267;
 
-        public int PeopleThatVote { get; set; }
-        public int VotesAbst { get; set; }
-        public int VotesNull { get; set; }
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public int VotesValid { get; set; }
+        private int _peopleThatVote, _votesAbst, _votesValid, _votesNull;
 
-
-
-        public Dates(int votesValid, int votesAbst, int votesNull)
+        public Dates(int peopleThatVote, int votesAbst, int votesValid, int votesNull)
         {
-            PeopleThatVote = votesValid;
-            VotesAbst = votesAbst;
-            VotesNull = votesNull;
+            _peopleThatVote = peopleThatVote;
+            _votesAbst = votesAbst;
+            _votesValid = votesValid;
+            _votesNull = votesNull;
+
         }
 
-        //Empty construct
-        public Dates()
+        public int peopleThatVote
         {
-        }
-
-        //Calculate the peopleThatVote
-        public int calculatePeopleThatVote(String absentString)
-        {
-            int people = 0;
-
-            try
+            get { return _peopleThatVote; }
+            set
             {
-                int absentionVotes = int.Parse(absentString);
-                if (absentionVotes >= TOTALPOPULATION)
-                {
-                    MessageBox.Show("The absetion votes values can not be higher than total population");
-                }
-                else
-                {
-                    people = TOTALPOPULATION - absentionVotes;
-
-                }
+                _peopleThatVote = value;
+                OnPropertyChange(nameof(peopleThatVote));
             }
-            catch (FormatException e)
+        }
+        public int votesAbst
+        {
+            get { return _votesAbst; }
+            set
             {
-                MessageBox.Show("The value of absent votes can not be alphabetic character");
+                _votesAbst = value;
+                OnPropertyChange(nameof(votesAbst));
             }
-
-            return people;
-
         }
-        //Calculate the null votes        
-        public int votesNullCalculate(String absentString)
+        public int votesValid
         {
-            int people = calculatePeopleThatVote(absentString);
-            int nullvotes = (people / 20);
-
-            return nullvotes;
+            get { return _votesValid; }
+            set
+            {
+                _votesValid = value;
+                OnPropertyChange(nameof(votesValid));
+            }
         }
-
-        //Calculate the valid votes
-        public int votesValidCalculate(int peopleThatVote, int votesNull)
+        public int votesNull
         {
-            return peopleThatVote - votesNull;
+            get { return _votesNull; }
+            set
+            {
+                _votesNull = value;
+                OnPropertyChange(nameof(votesNull));
+            }
         }
 
-        public override string? ToString()
+        // Método que se encarga de actualizar las propiedades en cada cambio
+        private void OnPropertyChange(string propertyName)
         {
-            return "Valid votes: " + PeopleThatVote +
-                "\n" + "Abstent votes: " + VotesAbst +
-                "\n" + "Null votes: " + VotesNull;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+
     }
 }

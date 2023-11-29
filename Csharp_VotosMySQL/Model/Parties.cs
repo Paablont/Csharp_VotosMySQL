@@ -10,7 +10,7 @@ namespace Csharp_VotosMySQL.Model
 {
     class Parties : INotifyPropertyChanged
     {
-        #region VARIABLES
+        
         
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _name;
@@ -80,15 +80,7 @@ namespace Csharp_VotosMySQL.Model
                 _seat = value;
                 OnPropertyChange(nameof(seatCount));
             }
-        }
-
-        // En la clase Parties
-        
-
-
-
-
-        #endregion
+        }        
 
         // Método que se encarga de actualizar las propiedades en cada cambio
         private void OnPropertyChange(string propertyName)
