@@ -26,24 +26,21 @@ namespace Csharp_VotosMySQL
     {
         //Invocamos el modelo y lo asignamos a DataContext
         private PartyModelView model = new PartyModelView();
-        DataModelView datesPre;
+        Dates datesPre { get; set; }
         Parties party;
         int peopleThatVote, votesAbst, votesNull, seatsNumber, votesValid;
         string absentString, nullString, seatString;
-
         public MainWindow()
         {
             InitializeComponent();
             DataContext = model;
-            DataContext = datesPre;
             //Cargamos los datos existentes en la BDD
             model.LoadParties();
-            datesPre.LoadDates();
-            
-            datesPre = new DataModelView();
-           
+
+            datesPre = new Dates();
+
             dvgParties.ItemsSource = model.parties;
-            
+
             Loaded += totalPopulationChange;
 
             //When the tbxAbsent  changes, tbxNull refresh with update null vote count
@@ -57,7 +54,7 @@ namespace Csharp_VotosMySQL
         //When press tab 1 or tab 2, clear the data from the datagrid on tab 3
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             if (tbControlMenu.SelectedIndex == 0 || tbControlMenu.SelectedIndex == 1)
             {
                 dvgVotos.ItemsSource = null;
@@ -77,7 +74,7 @@ namespace Csharp_VotosMySQL
         //When click on Button saves data
         private void btnSaveData_Click(object sender, RoutedEventArgs e)
         {
-            
+
             absentString = tbxAbsent.Text;
             nullString = tbxNull.Text;
             peopleThatVote = datesPre.calculatePeopleThatVote(absentString);
@@ -231,13 +228,13 @@ namespace Csharp_VotosMySQL
                 {
                     //Esto lo actualiza en el Datagrid
                     dvgVotos.ItemsSource = model.parties;
-                    
+
                     model.calculateVotesParty(votesValid, model.parties);
                     model.calculateStands(model.parties, seatsNumber);
 
                     //y esto en el SQL
                     foreach (var party in model.parties)
-                    {                       
+                    {
                         model.votesParty = party.voteParty;
                         model.seatCount = party.seatCount;
                         model.name = party.nameParty;

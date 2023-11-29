@@ -17,6 +17,8 @@ namespace Csharp_VotosMySQL.ModelView
         #region VARIABLES
 
         public const int TOTALPOPULATION = 6921267;
+        private const String cnstr = "server=localhost;uid=pablo;pwd=pablo;database=votosddbb";
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
