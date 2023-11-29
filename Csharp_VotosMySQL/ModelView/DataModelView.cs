@@ -89,7 +89,7 @@ namespace Csharp_VotosMySQL.ModelView
 
         public void UpdateDates()
         {
-            String SQL = $"UPDATE datos SET votosNulos = '{votesNull}',abstenciones = '{votesAbst}',votesValidos = '{votesValid}', personas = '{peopleThatVote}' WHERE poblacionTotal = '{TOTALPOPULATION}';";
+            String SQL = $"UPDATE datos SET votosNulos = '{votesNull}',abstenciones = '{votesAbst}',votosValidos = '{votesValid}', personas = '{peopleThatVote}' WHERE poblacionTotal = '{TOTALPOPULATION}';";
             MySQLDataComponent.ExecuteNonQuery(SQL, cnstr);
         }
 

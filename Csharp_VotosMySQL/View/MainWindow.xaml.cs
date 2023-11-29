@@ -26,7 +26,7 @@ namespace Csharp_VotosMySQL
     {
         //Invocamos el modelo y lo asignamos a DataContext
         private PartyModelView model = new PartyModelView();
-        Dates datesPre { get; set; }
+        DataModelView datesPre = new DataModelView();
         Parties party;
         int peopleThatVote, votesAbst, votesNull, seatsNumber, votesValid;
         string absentString, nullString, seatString;
@@ -37,7 +37,7 @@ namespace Csharp_VotosMySQL
             //Cargamos los datos existentes en la BDD
             model.LoadParties();
 
-            datesPre = new Dates();
+            
 
             dvgParties.ItemsSource = model.parties;
 
@@ -93,10 +93,14 @@ namespace Csharp_VotosMySQL
             {
                 //When  you press the button change to the second tab
                 MessageBox.Show("Data save properly");
+                datesPre.NewDate();
                 //MessageBox.Show(peopleThatVote.ToString());
                 tbControlMenu.SelectedIndex = 1;
                 tabItem2.IsEnabled = true;
+                
             }
+
+            
 
 
         }
@@ -132,8 +136,6 @@ namespace Csharp_VotosMySQL
             }
 
         }
-
-
 
         //Button that add a new party to the datagrid
         private void btnSaveParty_Click(object sender, RoutedEventArgs e)

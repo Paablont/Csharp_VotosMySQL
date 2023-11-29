@@ -73,53 +73,7 @@ namespace Csharp_VotosMySQL.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        //Calculate the peopleThatVote
-        public int calculatePeopleThatVote(String absentString)
-        {
-            int people = 0;
-
-            try
-            {
-                int absentionVotes = int.Parse(absentString);
-                if (absentionVotes >= TOTALPOPULATION)
-                {
-                    MessageBox.Show("The absetion votes values can not be higher than total population");
-                }
-                else
-                {
-                    people = TOTALPOPULATION - absentionVotes;
-
-                }
-            }
-            catch (FormatException e)
-            {
-                MessageBox.Show("The value of absent votes can not be alphabetic character");
-            }
-
-            return people;
-
-        }
-        //Calculate the null votes        
-        public int votesNullCalculate(String absentString)
-        {
-            int people = calculatePeopleThatVote(absentString);
-            int nullvotes = (people / 20);
-
-            return nullvotes;
-        }
-
-        //Calculate the valid votes
-        public int votesValidCalculate(int peopleThatVote, int votesNull)
-        {
-            return peopleThatVote - votesNull;
-        }
-
-        public override string? ToString()
-        {
-            return "Valid votes: " + peopleThatVote +
-                "\n" + "Abstent votes: " + votesAbst +
-                "\n" + "Null votes: " + votesNull;
-        }
+        
 
 
 
